@@ -1,0 +1,108 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class FroggerClone extends JFrame implements KeyListener, ActionListener {
+
+    private final int WIDTH = 400;
+    private final int HEIGHT = 400;
+    private final int FROG_SIZE = 30;
+    private final int OBSTACLE_SPEED = 5;
+
+    private int frogX = WIDTH / 2 - FROG_SIZE / 2;
+    private int frogY = HEIGHT - FROG_SIZE - 10;
+    private int obstacleX = 0;
+    private int obstacleY = 50;
+
+    private Timer timer;
+
+    public FroggerClone() {
+        setTitle("Frogger Clone");
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        addKeyListener(this);
+
+        timer = new Timer(20, this);
+        timer.start();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            FroggerClone froggerClone = new FroggerClone();
+            froggerClone.setVisible(true);
+        });
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        drawFrog(g);
+        drawObstacle(g);
+    }
+
+    private void drawFrog(Graphics g) {
+        g.setColor(Color.GREEN);
+        g.fillRect(frogX, frogY, FROG_SIZE, FROG_SIZE);
+    }
+
+    private void drawObstacle(Graphics g) {
+        g.setColor(Color.RED);
+        g.fillRect(obstacleX, obstacleY, WIDTH, 20);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        obstacleX += OBSTACLE_SPEED;
+        if (obstacleX > WIDTH) {
+            obstacleX = 0;
+        }
+
+        checkCollision();
+
+        repaint();
+    }
+
+    private void checkCollision() {
+        Rectangle frogRect = new Rectangle(frogX, frogY, FROG_SIZE, FROG_SIZE);
+        Rectangle obstacleRect = new Rectangle(obstacleX, obstacleY, WIDTH, 20);
+
+        if (frogRect.intersects(obstacleRect)) {
+            JOptionPane.showMessageDialog(this, "Game Over!");
+            resetGame();
+        }
+    }
+
+    private void resetGame() {
+        frogX = WIDTH / 2 - FROG_SIZE / 2;
+        frogY = HEIGHT - FROG_SIZE - 10;
+        obstacleX = 0;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_LEFT && frogX > 0) {
+            frogX -= 10;
+        } else if (key == KeyEvent.VK_RIGHT && frogX < WIDTH - FROG_SIZE) {
+            frogX += 10;
+        } else if (key == KeyEvent.VK_UP && frogY > 0) {
+            frogY -= 10;
+        } else if (key == KeyEvent.VK_DOWN && frogY < HEIGHT - FROG_SIZE) {
+            frogY += 10;
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+}
