@@ -1,0 +1,2 @@
+# Mr.Froggy
+"🐸 Frogger Clone in Java 🚗🚚 Dive into nostalgic gaming with this simple yet fun Frogger Clone! Guide your frog through traffic, avoid obstacles, and enjoy a classic gaming experience. This project, implemented in Java with Swing, is a great way to explore basic game development concepts. Hop your way to victory and feel free to customize and enhance the game for your own coding adventure! 🕹️✨ #Java #GameDev #FroggerClone"
